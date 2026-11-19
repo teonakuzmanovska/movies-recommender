@@ -2,7 +2,7 @@ from http.client import HTTPException
 import requests
 
 def get_all_reviews():
-    reviews_url = f"http://reviews_service:8001/movies-reviews/reviews"  # reviews_service - name of reviews container
+    reviews_url = "http://reviews_service:8000/movies-reviews/reviews"
     reviews_response = requests.get(reviews_url, verify=False)
 #     print(movie_response)
     if reviews_response.status_code != 200:

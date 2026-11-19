@@ -1,23 +1,98 @@
 _format_version: "1.1"
 services:
   - name: movie-service
-    url: http://movie_service:8003
+    url: http://movie_service:8000/movies-crud/movies
     routes:
       - name: movie-route
         paths:
           - /movies
+        strip_path: true
+
+  - name: movie-docs-service
+    url: http://movie_service:8000/docs
+    routes:
+      - name: movie-docs-route
+        paths:
+          - /movies/docs
+        strip_path: true
+
+  - name: movie-openapi-service
+    url: http://movie_service:8000/movies/openapi.json
+    routes:
+      - name: movie-openapi-route
+        paths:
+          - /movies/openapi.json
+        strip_path: true
+
+  - name: movie-internal-api-service
+    url: http://movie_service:8000
+    routes:
+      - name: movie-internal-api-route
+        paths:
+          - /movies-crud
+        strip_path: false
 
   - name: reviews-service
-    url: http://reviews_service:8004
+    url: http://reviews_service:8000/movies-reviews/reviews
     routes:
       - name: reviews-route
         paths:
           - /reviews
+        strip_path: true
+
+  - name: reviews-docs-service
+    url: http://reviews_service:8000/docs
+    routes:
+      - name: reviews-docs-route
+        paths:
+          - /reviews/docs
+        strip_path: true
+
+  - name: reviews-openapi-service
+    url: http://reviews_service:8000/reviews/openapi.json
+    routes:
+      - name: reviews-openapi-route
+        paths:
+          - /reviews/openapi.json
+        strip_path: true
+
+  - name: reviews-internal-api-service
+    url: http://reviews_service:8000
+    routes:
+      - name: reviews-internal-api-route
+        paths:
+          - /movies-reviews
+        strip_path: false
 
   - name: recommendation-service
-    url: http://recommendation_service:8005
+    url: http://recommendation_service:8000/recommendations/recommendations
     routes:
       - name: recommendation-route
         paths:
           - /recommendations
+        strip_path: true
+
+  - name: recommendation-docs-service
+    url: http://recommendation_service:8000/docs
+    routes:
+      - name: recommendation-docs-route
+        paths:
+          - /recommendations/docs
+        strip_path: true
+
+  - name: recommendation-openapi-service
+    url: http://recommendation_service:8000/recommendations/openapi.json
+    routes:
+      - name: recommendation-openapi-route
+        paths:
+          - /recommendations/openapi.json
+        strip_path: true
+
+  - name: recommendation-internal-api-service
+    url: http://recommendation_service:8000
+    routes:
+      - name: recommendation-internal-api-route
+        paths:
+          - /recommendations/recommendations
+        strip_path: false
 

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 app = FastAPI(
     title="Recommendations",
-    openapi_url="/openapi.json",  # URL where OpenAPI JSON will be served
+    openapi_url="/recommendations/openapi.json",
     docs_url="/docs",
 )
 
@@ -13,5 +13,5 @@ app.include_router(recommendations_router, prefix="/recommendations", tags=["rec
 
 if __name__ == "__main__":
     load_dotenv()
-    uvicorn.run(app, host="localhost", port=8005, log_level="info")
-    
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+

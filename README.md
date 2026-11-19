@@ -28,9 +28,17 @@ These instructions will help you set up and run the Movie Recommendation Service
 3. Run `docker compose up`
 
 ### Accessing The Endpoints
-- `http://localhost:8000/docs` : Access the endpoint of movies service
-- `http://localhost:8001/docs` : Access the endpoint of reviews service
-- `http://localhost:8002/docs` : Access the endpoint of recommendations service
+- `http://localhost:8000/movies` : Movies service
+- `http://localhost:8000/reviews` : Reviews service
+- `http://localhost:8000/recommendations` : Recommendations service
+- `http://localhost:8000/movies/docs` : Movies Swagger UI
+- `http://localhost:8000/reviews/docs` : Reviews Swagger UI
+- `http://localhost:8000/recommendations/docs` : Recommendations Swagger UI
+
+Kong is the only public API entry point. The application containers all listen
+on port `8000` inside Docker, but they are not published directly to the host.
+Kong's admin API remains private inside the Docker network and is not published
+to the host.
 
 
 
