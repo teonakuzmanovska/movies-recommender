@@ -5,11 +5,13 @@ from dotenv import load_dotenv
 
 app = FastAPI(
     title="Recommendations",
+    openapi_url="/recommendations/openapi.json",
+    docs_url="/docs",
 )
 
 app.include_router(recommendations_router, prefix="/recommendations", tags=["recommendations"])
 
 if __name__ == "__main__":
     load_dotenv()
-    uvicorn.run(app, host="localhost", port=8002, log_level="info")
-    
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+
