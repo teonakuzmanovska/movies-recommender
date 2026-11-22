@@ -1,4 +1,4 @@
-from http.client import HTTPException
+from fastapi import HTTPException
 from app.models import Review
 from sqlalchemy.orm import Session
 import requests
@@ -8,7 +8,7 @@ def get_reviews(db: Session, offset: int = 0, limit: int = 100):
 
 def add_review(db: Session, review):
     movie_url = f"http://movie_service:8000/movies-crud/movies/{review.movie_id}"
-    movie_response = requests.get(movie_url, verify=False)
+    movie_response = requests.get(movie_url, timeout=10)
     print(movie_response)
     if movie_response.status_code != 200:
         raise HTTPException(status_code=404, detail="Movie not found")

@@ -47,7 +47,7 @@ services:
       - movie-network
     
   movie_db:
-    image: postgres:12.1-alpine
+    image: postgres:16-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -63,7 +63,7 @@ services:
       - movie-network
 
   kong:
-    image: kong:latest
+    image: kong:3.9
     environment:
       - KONG_DATABASE=off
       - KONG_DECLARATIVE_CONFIG=/etc/kong/kong.yml

@@ -1,9 +1,9 @@
-from http.client import HTTPException
+from fastapi import HTTPException
 import requests
 
 def get_all_reviews():
     reviews_url = "http://reviews_service:8000/movies-reviews/reviews"
-    reviews_response = requests.get(reviews_url, verify=False)
+    reviews_response = requests.get(reviews_url, timeout=10)
 #     print(movie_response)
     if reviews_response.status_code != 200:
         raise HTTPException(status_code=404, detail="Review not found")

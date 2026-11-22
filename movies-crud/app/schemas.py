@@ -1,15 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class MovieBase(BaseModel):
     title: str
-    description: str = None
-    genres: str = None
-    casts: str = None
+    description: str | None = None
+    genres: str | None = None
+    casts: str | None = None
 
 class MovieCreate(MovieBase):
     pass
 
 class Movie(MovieBase):
     id: int
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
