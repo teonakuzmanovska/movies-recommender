@@ -25,7 +25,25 @@ These instructions will help you set up and run the Movie Recommendation Service
 
 1. Open docker desktop
 2. Navigate to the project directory in terminal
-3. Run `docker compose up`
+3. Copy `.env.example` to `.env` and set local values for the PostgreSQL and Keycloak passwords
+4. Run `docker compose up`
+
+### Keycloak reviewer setup
+
+Keycloak stores user accounts and authentication data. The application stores
+the authenticated user's Keycloak ID as `reviewer_id` on each review.
+
+The realm configuration in `keycloak/configs/realm-export.json` does not seed a
+demo user or password. After starting the services, create a reviewer manually:
+
+1. Open `http://localhost:8080/admin`.
+2. Sign in with the Keycloak admin credentials from your local `.env` file.
+3. Select the `movies-reviews` realm.
+4. Go to **Users**, choose **Add user**, and create a reviewer.
+5. Set a non-temporary password under **Credentials**.
+
+Use that reviewer account to obtain a token when testing the protected review
+creation, update, and delete endpoints.
 
 ### Accessing The Endpoints
 - `http://localhost:8000/movies` : Movies service
