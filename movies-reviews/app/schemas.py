@@ -1,26 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class ReviewBase(BaseModel):
-    rating: float = None
-    comment: str = None
+    rating: float | None = None
+    comment: str | None = None
 
 class ReviewCreate(ReviewBase):
     movie_id: int
 
-# class MovieBase(BaseModel):
-#     title: str
-#     description: str = None
-#     genres: str = None
-#     casts: str = None
-
-# class Movie(MovieBase):
-#     id: int
-#     class Config:
-#         orm_mode = True
-
 class Review(ReviewBase):
     id: int
     movie_id: int
-    movie: dict
-    class Config:
-        orm_mode = True
+    movie: dict | None = None
+    model_config = ConfigDict(from_attributes=True)

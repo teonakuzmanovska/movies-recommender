@@ -1,6 +1,4 @@
-FROM python:3.10
-
-RUN apt-get -y update; apt-get -y install curl
+FROM python:3.15-slim
 
 COPY requirements.txt requirements.txt
 
