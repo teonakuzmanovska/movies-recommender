@@ -1,0 +1,16 @@
+{
+  "realm": "movies-reviews",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "movies-reviews-client",
+      "name": "Movies Reviews API",
+      "enabled": true,
+      "publicClient": true,
+      "clientAuthenticatorType": "client-none",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": false
+    }
+  ]
+}

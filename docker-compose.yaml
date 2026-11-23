@@ -10,8 +10,8 @@ services:
     environment:
       DB_HOST: movie_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: moviesdb
     depends_on:
       movie_db:
@@ -19,7 +19,6 @@ services:
     # Do not publish application ports; Kong is the public entry point.
     networks:
       - movie-network
-
   reviews_service:
     build:
       context: ./movies-reviews
@@ -27,9 +26,13 @@ services:
     environment:
       DB_HOST: movie_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: moviesdb
+      KEYCLOAK_PUBLIC_URL: http://localhost:8080
+      KEYCLOAK_INTERNAL_URL: http://keycloak:8080
+      KEYCLOAK_REALM: movies-reviews
+      KEYCLOAK_CLIENT_ID: movies-reviews-client
     depends_on:
       movie_db:
         condition: service_healthy
@@ -49,11 +52,13 @@ services:
   movie_db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=moviesdb
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB:-moviesdb}
     ports:
       - 5432:5432
+    volumes:
+      - ./keycloak/migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d moviesdb"]
       interval: 5s
@@ -73,10 +78,33 @@ services:
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_LISTEN=0.0.0.0:8001
     volumes:
-      - ./kong.yml:/etc/kong/kong.yml
+      - ./kong/kong.yml:/etc/kong/kong.yml:ro
     ports:
       - 8000:8000
       - 8443:8443
+    networks:
+      - movie-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.2
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://movie_db:5432/moviesdb
+      KC_DB_SCHEMA: keycloak
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+    volumes:
+      - ./keycloak/configs:/opt/keycloak/data/import:ro
+    depends_on:
+      movie_db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
     networks:
       - movie-network
 

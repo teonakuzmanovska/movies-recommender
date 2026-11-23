@@ -10,5 +10,6 @@ class ReviewCreate(ReviewBase):
 class Review(ReviewBase):
     id: int
     movie_id: int
+    reviewer_id: str
     movie: dict | None = None
     model_config = ConfigDict(from_attributes=True)
